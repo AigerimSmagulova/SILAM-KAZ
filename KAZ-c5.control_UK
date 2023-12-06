@@ -1,0 +1,239 @@
+# Test setup for KAZ run
+CONTROL_V5_3
+
+LIST = GENERAL_PARAMETERS
+  case_name = KAZ-AQ
+  direction_in_time = FORWARD
+  simulation_type = EULERIAN
+  start_time = ${start_time}
+  computed_period = ${maxhours} hr
+  time_step = 10 min
+  cut_area_source_if_outside_meteo_grid = YES
+  computation_accuracy = 5
+END_LIST = GENERAL_PARAMETERS
+
+LIST = MPI_PARALLEL_PARAMETERS
+  x_divisions = ${nx}
+  y_divisions = ${ny}
+  use_mpiio = YES
+  use_mpiio_netcdf = YES
+  max_wind_speed = 100
+END_LIST = MPI_PARALLEL_PARAMETERS
+
+LIST = DISPERSION_PARAMETERS
+  grid_method = OUTPUT_GRID
+  vertical_method = OUTPUT_LEVELS
+END_LIST = DISPERSION_PARAMETERS
+
+LIST = METEO_PARAMETERS
+
+   dynamic_meteo_file = NETCDF:WRF_OUTPUT WRF/%ay4%am2%ad2%ah2/wrfout_d01_%y4%m2%d2%h2.f%f3
+	static_meteo_file = NETCDF:WRF_OUTPUT WRF/%ay4%am2%ad2%ah2/wrfout_d01_%ay4%am2%ad2%ah2.f000
+
+
+
+  static_meteo_file = GRADS emis/sslt/salinity_map_global_1deg.fld_water_salinity.grads.super_ctl
+  static_meteo_file = NETCDF:TZ_index meteo/tz_index_02deg.nc4
+  meteo_time_step = 3 hr
+  if_wait_for_data = NO
+  abl_parameterization_method = FULL_PARAM
+  number_of_precipitation_fields = 2
+  max_hole_in_meteo_data = 0 hr
+  use_lai = STATIC1
+#  use_lai = STATIC2
+END_LIST = METEO_PARAMETERS
+
+LIST = EMISSION_PARAMETERS
+
+  emission_source = EULERIAN emis/lightning/GEIAv1_lightning_NOx_1990_12790-withcellarea1-3km.sa2.hdr
+
+  emission_source = EULERIAN emis/MEGAN/MEGAN-MACC_biogenic_monoterpene_as2010.sa2.hdr
+  emission_source = EULERIAN emis/MEGAN/MEGAN-MACC_biogenic_isoprene_as2010.sa2.hdr
+
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/ALD2-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/ALDX-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/BENZENE-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/CH3Cl-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/CO-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/EC_FINE-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/ETHA-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/ETH-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/ETOH-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/HCHO-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/IOLE-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/NH3-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/NOX-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/OC_FINE-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/OLE5-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/PAR5-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/SO2-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/TOLUENE-CAMS-GLOB-ANT-as2017.sa2.hdr
+   emission_source = EULERIAN emis/CAMS_GLOB_v21_Kaz_CB5v2_as_2017/XYLENE-CAMS-GLOB-ANT-as2017.sa2.hdr
+
+## These guys are missing from CAMS_GLOB
+  emission_source = EULERIAN emis/EDGAR_GLOB_v432_CB5v2_with05deg/MINERAL_FINE-EDGAR432-GLOB-ANT-as2012.sa2.hdr
+  emission_source = EULERIAN emis/EDGAR_GLOB_v432_CB5v2_with05deg/PM_COARSE-EDGAR432-GLOB-ANT-as2012.sa2.hdr
+
+  emission_source = EULERIAN  emis/sslt/src_dms.ini
+  emission_source = EULERIAN  emis/sslt/src_sea_salt_global.ini
+  emission_source = EULERIAN  emis/dust-simple/src_simple_dust.ini
+
+  cut_area_source_if_outside_meteo_grid = YES
+  if_technical_source_dump = NONE
+END_LIST = EMISSION_PARAMETERS
+
+LIST = TRANSFORMATION_PARAMETERS
+  transformation = DMAT_SULPHUR EULERIAN
+  transformation = CB5_SOA EULERIAN
+#  transformation = PASSIVE EULERIAN
+  aerosol_dynamics = SIMPLE  EULERIAN
+  aerosol_dynamics = VBS EULERIAN
+  dry_deposition_scheme = KS2011_TF
+  surface_resistance_method = WES2013
+  wet_deposition_scheme = 2018_SCAVENGING
+  max_scav_rate_depends_on = HORIZONTAL_WIND #FIXME CAPE should be in meteo
+  use_dynamic_albedo = YES
+  if_actual_humidity_for_particle_size = YES
+  default_relative_humidity = 0.8
+  passive_subst_ref_lifetime = 1000000 day
+  passive_subst_ref_tempr = 288
+  passive_subst_dLifeTime_dT = 0 min/K
+  passive_ones_tracer = NO
+  mass_low_threshold = STANDARD_ACCURACY
+  oh_param_method = FROM_MASSMAP
+  biogenic_SOA_aging_rate = 1.2E-11
+  anthropogenic_SOA_aging_rate = 4.0E-11
+  intermediate_volatility_OC_aging_rate = 4.0E-11
+  if_monoterpene_products = 1.0
+  if_full_acid_chemistry = YES
+  make_coarse_no3 = sslt   0.03
+  methylchloroform_OH_rate_factor = 1.0
+  photolysis_affected_by_o3col = NO
+  photolysis_affected_by_aod = YES
+  photolysis_AOD_wavelength = 550 nm
+  cloud_model_for_photolysis = SIMPLE_CLOUD
+  cbm_tolerance = FAST
+END_LIST = TRANSFORMATION_PARAMETERS
+
+LIST = INITIAL_AND_BOUNDARY_CONDITIONS
+
+# From bopundaries
+ #initialize_quantity = concentration
+ #initialization_file = NETCDF SILAM-bnd/%ay4%am2%ad200/SILAM571KAZ%ay4-%am2-%ad2T%ah2:00:00Z_%y4%m2%d2%hi2.nc
+
+#  From yesterdays' run
+ initialize_quantity = concentration
+ initialize_quantity = advection_moment_x
+ initialize_quantity = advection_moment_y
+ initialize_quantity = advection_moment_z
+ initialization_file = GRADS    ${OUTPUT_DIR}/%ay4%am2%ad2/%y4%m2%d2%h2_%y4_%m2_%d2_%h2.00.0.0_dump.grads.super_ctl
+
+#
+
+  boundary_type = DIRICHLET
+  if_lateral_boundary = YES
+  if_top_boundary = YES
+  if_bottom_boundary = NO
+  boundary_time_step = 3 hr
+  boundary_header_filename = boundary_CB5.ini
+END_LIST = INITIAL_AND_BOUNDARY_CONDITIONS
+
+LIST = OPTICAL_DENSITY_PARAMETERS
+  optical_coefficients_depend_on_relative_humidity = YES
+  optical_coefficients_depend_on_temperature = YES
+  if_split_aerosol_modes = YES
+  if_narrow_wave_bands = YES
+END_LIST = OPTICAL_DENSITY_PARAMETERS
+
+LIST = OUTPUT_PARAMETERS
+  source_id = NO_SOURCE_SPLIT
+  vertical_method = CUSTOM_LAYERS
+  level_type = HYBRID
+  hybrid_coefficients_bottom = 1               0       1
+  hybrid_coefficients_bottom = 2               0  0.99763
+  hybrid_coefficients_bottom = 3        7.367743  0.994019
+  hybrid_coefficients_bottom = 4        210.3939  0.979663
+  hybrid_coefficients_bottom = 5        855.3618  0.951822
+  hybrid_coefficients_bottom = 6         2063.78  0.907884
+  hybrid_coefficients_bottom = 7        3850.913  0.847375
+  hybrid_coefficients_bottom = 8        6144.315  0.771597
+  hybrid_coefficients_bottom = 9        8802.356  0.683269
+  hybrid_coefficients_bottom = 10        11632.76  0.586168
+  hybrid_coefficients_bottom = 11        14411.12  0.484772
+  hybrid_coefficients_bottom = 12        16899.47  0.383892
+  hybrid_coefficients_bottom = 13        18864.75  0.288323
+  hybrid_coefficients_bottom = 14         20097.4  0.202476
+  hybrid_coefficients_bottom = 15        20429.86  0.130023 
+  hybrid_coefficients_domain_top =        19755.11  0.073534
+
+  output_time_step = 1 hr
+  output_times = REGULAR
+  output_format = NETCDF4
+  time_split = HOURLY_NEW_FILE
+  template = ${OUTPUT_DIR}/${fcdate}${outsuff}/%y4%m2%d2%h2
+  variable_list = output_config_cb4.ini
+  massmap_precision_factor = 128
+  dump_time_step = 24 hr
+  grid_method = CUSTOM_GRID
+  grid_type = lon_lat
+  grid_title = KAZ-0.2
+  resol_flag = 128
+  ifReduced = 0
+  earth_flag = 0
+  wind_component = 0
+  reduced_nbr_str = 0
+
+   lon_start = 77.6
+   lat_start = 47.1
+   lon_end = 84.9
+   lat_end = 50.6
+   dx = 0.2
+   dy = 0.2
+
+  lat_s_pole = -90.
+  lon_s_pole = 0.
+  lat_pole_stretch = 0.
+  lon_pole_stretch = 0.
+END_LIST = OUTPUT_PARAMETERS
+
+LIST = STANDARD_SETUP
+  advection_method_eulerian = EULERIAN_V5
+  mass_distributor = TRIANGLE_SLAB
+  diffuse_vert_cm = YES
+  grav_separation = NO
+  reference_4_low_mass_threshold = CONST
+  stomatal_conductance = HIGH
+  kz_profile_method = SIMPLE_ABL_EC_FT_KZ
+  advection_method_lagrangian = LAGRANGIAN_WIND_ENDPOINT_3D
+  random_walk_method = FULLY_MIXED
+  advection_method_default = EULERIAN
+  abl_height_method = COMBINATION
+  continuity_equation = anelastic_v2
+  wind_diagnostics = opentop
+  horizontal_interpolation = LINEAR
+  vertical_interpolation = LINEAR
+  time_interpolation = LINEAR
+  standard_setup_directory = ${silam_ini}/
+  nuclide_database_fnm = ^silam_nuclides.dat
+  chemical_database_fnm = ^silam_chemicals_95_OC.dat
+  standard_cocktail_fnm = ^standard_aerosols_cocktails.ini
+  standard_cocktail_fnm = ^standard_chemistry_cocktails_cbm5.ini
+  standard_cocktail_fnm = ^standard_auxillary_cocktails.ini
+  standard_cocktail_fnm = ^standard_fires_cocktails.ini
+  standard_cocktail_fnm = ^standard_SOA_cocktails.ini
+  grib_code_table_fnm = ^grib_code_table_v5.silam
+  netcdf_name_table_fnm = ^netcdf_name_table.silam
+  timezone_list_fnm = ^tzindex_added_country_codes.dat
+  photolysis_data_file = ^photolysis_finrose_84rates50levs12ozones7albedos.dat
+  #photolysis_data_file = ^photolysis_finrose.dat
+  land_use_data_meta_file = ^land_use_features_USGS_Eurasia.dat
+  optical_properties_meta_data_file = ^optical_properties.dat
+  allow_zero_forecast_length = NO
+  precipitation_low_limit = 0.0 mm/hr
+  print_debug_info = DEBUG_INFO_YES
+  cloud_report_interval = 1
+  disregard_meteo_data_sources = YES
+  randomise_reprojection = YES
+END_LIST = STANDARD_SETUP
+END_CONTROL_V5_3
+
